@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useUsers } from '../context/UserContext';
 import Link from 'next/link';
 
 const DashBoard = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartments, setSelectedDepartments] = useState([]);
+  const {addBookMarkUser} = useUsers();
 
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
@@ -47,6 +49,14 @@ const DashBoard = () => {
     return matchesSearch && matchesDepartment;
   });
 
+  function addBook(data){
+    addBookMarkUser(data);
+    alert(`${data.firstName} is added in Bookmarks`);
+  }
+
+  function promotionUser(data){
+    alert(`${data.firstName} ${data.lastName} is promoted to higher post`);
+  } 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold mb-4 text-gray-800">Employee Dashboard</h1>
@@ -111,10 +121,10 @@ const DashBoard = () => {
                   View
                 </button>
               </Link>
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-sm">
+              <button onClick={()=>{addBook(user)}} className="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-sm">
                 Bookmark
               </button>
-              <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+              <button onClick={()=>{promotionUser(user)}} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
                 Promote
               </button>
             </div>
