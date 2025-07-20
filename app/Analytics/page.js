@@ -1,8 +1,10 @@
 import React from 'react'
-
+import DepartmentChart from '../Components/DepartmentChart'
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <DepartmentChart />
+    </div>
   )
 }
 

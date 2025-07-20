@@ -7,7 +7,7 @@ const DashBoard = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const {addBookMarkUser} = useUsers();
+  const {addBookMarkUser,theme} = useUsers();
 
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
@@ -58,14 +58,14 @@ const DashBoard = () => {
     alert(`${data.firstName} ${data.lastName} is promoted to higher post`);
   } 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">Employee Dashboard</h1>
+    <div className={`p-6 ${ theme === 'light' ? 'bg-gray-50' : 'bg-gray-900' } min-h-screen`}>
+      <h1 className={`text-3xl font-bold mb-4 'text-gray-900' ${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' }`}>Employee Dashboard</h1>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <input
           type="text"
           placeholder="Search by name, email, or department"
-          className="px-4 py-2 border rounded-md w-full sm:w-1/2"
+          className={`px-4 py-2 border rounded-md w-full sm:w-1/2 ${ theme === 'light' ? 'text-gray-900' : 'text-gray-50 border-amber-50' }`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -92,7 +92,7 @@ const DashBoard = () => {
         {filteredUsers.map((user) => (
           <div
             key={user.id}
-            className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-5 flex flex-col"
+            className={`${ theme === 'light' ? 'text-gray-900 bg-white' : 'text-gray-50 bg-gray-900 border border-white'} rounded-2xl shadow-md hover:shadow-lg transition-all p-5 flex flex-col`}
           >
             <div className="flex items-center gap-4 mb-4">
               <img
@@ -101,30 +101,30 @@ const DashBoard = () => {
                 className="w-16 h-16 rounded-full object-cover"
               />
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' }  text-xl font-semibold`}>
                   {user.firstName} {user.lastName}
                 </h2>
-                <p className="text-sm text-gray-600">{user.email}</p>
+                <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-400' } text-sm`}>{user.email}</p>
               </div>
             </div>
 
             <div className="text-sm text-gray-700 flex flex-col gap-1">
-              <p><strong>Age:</strong> {user.age}</p>
-              <p><strong>Department:</strong> {user.company?.department}</p>
-              <p><strong>Title:</strong> {user.company?.title}</p>
-              <p><strong>Rating:</strong> ⭐ {user.rating}</p>
+              <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-200' }`} ><strong >Age:</strong> {user.age}</p>
+              <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-200' }`} ><strong >Department:</strong> {user.company?.department}</p>
+              <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-200' }`} ><strong >Title:</strong> {user.company?.title}</p>
+              <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-200' }`} ><strong >Rating:</strong> ⭐ {user.rating}</p>
             </div>
 
             <div className="mt-4 flex gap-2">
               <Link href={`/employee/${user.id}`}>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm cursor-pointer">
                   View
                 </button>
               </Link>
-              <button onClick={()=>{addBook(user)}} className="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-sm">
+              <button onClick={()=>{addBook(user)}} className="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-sm cursor-pointer">
                 Bookmark
               </button>
-              <button onClick={()=>{promotionUser(user)}} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+              <button onClick={()=>{promotionUser(user)}} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm cursor-pointer">
                 Promote
               </button>
             </div>

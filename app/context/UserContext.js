@@ -6,10 +6,10 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [bookMarkedUser, setBookMarkedUsers] = useState([]);
+  const [theme, setTheme] = useState('light');
 
 
   function addBookMarkUser(data) {
-    console.log("Added from context:", data);
     setBookMarkedUsers(prev => [...prev, data]);
   }
 
@@ -18,9 +18,14 @@ export const UserProvider = ({ children }) => {
     setBookMarkedUsers(newData);
   }
 
+  function toggleTheme(){
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
+
   useEffect(() => {
     const storedUsers = localStorage.getItem('users');
     const storedBookmarks = localStorage.getItem('bookMarkedUsers');
+    const storedTheme = localStorage.getItem('theme');
 
     if (storedUsers) {
       setUsers(JSON.parse(storedUsers));
@@ -36,14 +41,21 @@ export const UserProvider = ({ children }) => {
     if (storedBookmarks) {
       setBookMarkedUsers(JSON.parse(storedBookmarks));
     }
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('bookMarkedUsers', JSON.stringify(bookMarkedUser));
   }, [bookMarkedUser]);
+  
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   return (
-    <UserContext.Provider value={{ users, bookMarkedUser, addBookMarkUser, deleteBookMarkUser , bookMarkedUser }}>
+    <UserContext.Provider value={{ users, bookMarkedUser, addBookMarkUser, deleteBookMarkUser , bookMarkedUser , theme , toggleTheme }}>
       {children}
     </UserContext.Provider>
   );

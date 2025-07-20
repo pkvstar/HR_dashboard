@@ -4,6 +4,8 @@ import { useParams } from 'next/navigation';
 import Overview from './tabs/Overview';
 import Projects from './tabs/Projects';
 import Feedback from './tabs/Feedback';
+import { useUsers } from '../../context/UserContext';
+
 
 const tabs = ['Overview', 'Projects', 'Feedback'];
 
@@ -16,10 +18,13 @@ const getBadgeColor = (rating) => {
 };
 
 export default function EmployeeDetail() {
+
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [tab, setTab] = useState('Overview');
   const rating = getRandomRating();
+  const {theme} = useUsers();
+  
 
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -30,15 +35,15 @@ export default function EmployeeDetail() {
   if (!user) return <div className="p-8">Loading...</div>;
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-4">{user.firstName} {user.lastName}</h1>
+    <div className={`p-8 ${ theme === 'light' ? 'bg-gray-50' : 'bg-gray-900' } min-h-screen`}>
+      <h1 className={`text-3xl font-bold mb-4 ${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' }`}>{user.firstName} {user.lastName}</h1>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <p className="text-gray-600 mb-2"><strong>Email:</strong> {user.email}</p>
-          <p className="text-gray-600 mb-2"><strong>Phone:</strong> {user.phone}</p>
-          <p className="text-gray-600 mb-2"><strong>Address:</strong> {user.address?.address}, {user.address?.city}</p>
-          <p className="text-gray-600 mb-2"><strong>Bio:</strong> Passionate and dedicated employee. Loves team collaboration.</p>
+          <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' } mb-2`}><strong>Email:</strong> {user.email}</p>
+          <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' } mb-2`}><strong>Phone:</strong> {user.phone}</p>
+          <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' } mb-2`}><strong>Address:</strong> {user.address?.address}, {user.address?.city}</p>
+          <p className={`${ theme === 'light' ? 'text-gray-900' : 'text-gray-50' } mb-2`}><strong>Bio:</strong> Passionate and dedicated employee. Loves team collaboration.</p>
         </div>
 
         <div className="mt-4 sm:mt-0">
