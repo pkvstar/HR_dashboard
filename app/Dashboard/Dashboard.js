@@ -7,16 +7,17 @@ const DashBoard = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const {addBookMarkUser,theme} = useUsers();
+  const {addBookMarkUser,theme,users: usersFromContext} = useUsers();
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const ratedUsers = storedUsers.map(user => ({
+    if (usersFromContext.length > 0) {
+    const ratedUsers = usersFromContext.map(user => ({
       ...user,
       rating: (Math.random() * 2 + 3).toFixed(1),
     }));
     setUsers(ratedUsers);
-  }, []);
+    }
+  }, [usersFromContext]);
 
   const allDepartments = [...new Set(users.map(u => u.company?.department).filter(Boolean))];
 
@@ -70,6 +71,7 @@ const DashBoard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
+        {usersFromContext.length<1 ? <h1 className=' text-2xl'>Loading....</h1> :
         <div className="flex flex-wrap gap-2">
           {allDepartments.map((dept) => (
             <button
@@ -86,6 +88,7 @@ const DashBoard = () => {
           ))}
           <button onClick={resetDep} className='px-2 py-1 hover:bg-red-500 hover:text-white rounded-lg text-sm cursor-pointer border-2 border-red-600 text-red-600'>reset</button>
         </div>
+        }
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
