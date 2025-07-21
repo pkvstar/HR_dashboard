@@ -1,5 +1,5 @@
 # Deployment Link
-
+https://hr-dashboard-lyart.vercel.app/
 
 ## Setup Instructions 
 To Run in Local Machine:
